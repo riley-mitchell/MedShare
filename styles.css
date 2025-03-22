@@ -729,33 +729,7 @@ footer {
   color: var(--text-light);
 }
 
-/* Form Validation States */
-.form-group.success input {
-  border-color: var(--secondary-color);
-}
-
-.form-group.error input {
-  border-color: var(--accent-color);
-}
-
-.error-message {
-  background-color: #ffebee;
-  color: var(--accent-color);
-  padding: 10px;
-  border-radius: var(--radius-sm);
-  margin: 15px 0;
-  font-size: 14px;
-}
-
-.success-message {
-  background-color: #e8f5e9;
-  color: var(--secondary-color);
-  padding: 10px;
-  border-radius: var(--radius-sm);
-  margin: 15px 0;
-  font-size: 14px;
-}
-
+/* General Utility Classes */
 .text-center {
   text-align: center;
   margin-top: 15px;
