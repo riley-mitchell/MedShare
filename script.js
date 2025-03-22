@@ -1,7 +1,5 @@
-// Firebase configuration
+// Firebase configuration - IMPORTANT: Replace with your actual Firebase config
 const firebaseConfig = {
-    // Replace with your Firebase config object
-    // You can find this in your Firebase project settings
     apiKey: "YOUR_API_KEY",
     authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
     projectId: "YOUR_PROJECT_ID",
@@ -13,15 +11,13 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-// Document ready function
+// Single document ready function
 document.addEventListener('DOMContentLoaded', function() {
-    // Original script.js code stays here...
-    
-    // Firebase Authentication UI
+    // ===== FIREBASE AUTHENTICATION FUNCTIONALITY =====
     const loginModal = document.getElementById('loginModal');
     const signupModal = document.getElementById('signupModal');
-    const loginBtn = document.querySelector('a.btn.btn-outline[href="#login"]');
-    const signupBtn = document.querySelector('a.btn.btn-primary[href="#signup"]');
+    const loginBtn = document.querySelector('a[href="#login"]');
+    const signupBtn = document.querySelector('a[href="#signup"]');
     const showLoginBtn = document.getElementById('showLoginBtn');
     const showSignupBtn = document.getElementById('showSignupBtn');
     const closeButtons = document.querySelectorAll('.close');
@@ -33,15 +29,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const createAccountBtns = document.querySelectorAll('a[href="#signup"].btn');
     
     // Update links to open modals
-    loginBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        loginModal.style.display = 'block';
-    });
+    if (loginBtn) {
+        loginBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            loginModal.style.display = 'block';
+        });
+    }
     
-    signupBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        signupModal.style.display = 'block';
-    });
+    if (signupBtn) {
+        signupBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            signupModal.style.display = 'block';
+        });
+    }
     
     createAccountBtns.forEach(btn => {
         btn.addEventListener('click', function(e) {
@@ -51,257 +51,179 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Switch between modals
-    showLoginBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        signupModal.style.display = 'none';
-        loginModal.style.display = 'block';
-    });
+    if (showLoginBtn) {
+        showLoginBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            signupModal.style.display = 'none';
+            loginModal.style.display = 'block';
+        });
+    }
     
-    showSignupBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        loginModal.style.display = 'none';
-        signupModal.style.display = 'block';
-    });
+    if (showSignupBtn) {
+        showSignupBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            loginModal.style.display = 'none';
+            signupModal.style.display = 'block';
+        });
+    }
     
     // Close modals
     closeButtons.forEach(button => {
         button.addEventListener('click', function() {
-            loginModal.style.display = 'none';
-            signupModal.style.display = 'none';
+            if (loginModal) loginModal.style.display = 'none';
+            if (signupModal) signupModal.style.display = 'none';
         });
     });
     
     // Close when clicking outside modal
     window.addEventListener('click', function(e) {
-        if (e.target == loginModal) {
+        if (loginModal && e.target == loginModal) {
             loginModal.style.display = 'none';
         }
-        if (e.target == signupModal) {
+        if (signupModal && e.target == signupModal) {
             signupModal.style.display = 'none';
         }
     });
     
     // Handle login form submission
-    loginForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
-        
-        // Show loading state
-        const submitBtn = loginForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
-        submitBtn.disabled = true;
-        loginError.style.display = 'none';
-        
-        // Authenticate with Firebase
-        firebase.auth().signInWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                // Successful login
-                showNotification('Successfully logged in!', 'success');
-                loginModal.style.display = 'none';
-                
-                // Reset form
-                loginForm.reset();
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-                
-                // Redirect to dashboard or refresh page
-                setTimeout(() => {
-                    window.location.href = "dashboard.html";
-                }, 1000);
-            })
-            .catch((error) => {
-                // Handle errors
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-                
-                // Display error message
-                loginError.textContent = getAuthErrorMessage(error.code);
-                loginError.style.display = 'block';
-                
-                console.error("Login error:", error);
-            });
-    });
-    
-    // Handle signup form submission
-    signupForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const name = document.getElementById('signupName').value;
-        const email = document.getElementById('signupEmail').value;
-        const password = document.getElementById('signupPassword').value;
-        const confirmPassword = document.getElementById('signupConfirmPassword').value;
-        
-        // Validate passwords match
-        if (password !== confirmPassword) {
-            signupError.textContent = "Passwords do not match.";
-            signupError.style.display = 'block';
-            return;
-        }
-        
-        // Show loading state
-        const submitBtn = signupForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
-        submitBtn.disabled = true;
-        signupError.style.display = 'none';
-        
-        // Create user in Firebase
-        firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                // Update user profile with name
-                return userCredential.user.updateProfile({
-                    displayName: name
-                }).then(() => {
-                    // Successful account creation
-                    showNotification('Account created successfully!', 'success');
-                    signupModal.style.display = 'none';
+    if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Show loading state
+            const submitBtn = loginForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+            submitBtn.disabled = true;
+            loginError.style.display = 'none';
+            
+            // Authenticate with Firebase
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Successful login
+                    showNotification('Successfully logged in!', 'success');
+                    loginModal.style.display = 'none';
                     
                     // Reset form
-                    signupForm.reset();
+                    loginForm.reset();
                     submitBtn.innerHTML = originalText;
                     submitBtn.disabled = false;
                     
-                    // Redirect to dashboard
+                    // Redirect to dashboard or refresh page
                     setTimeout(() => {
                         window.location.href = "dashboard.html";
                     }, 1000);
+                })
+                .catch((error) => {
+                    // Handle errors
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    
+                    // Display error message
+                    loginError.textContent = getAuthErrorMessage(error.code);
+                    loginError.style.display = 'block';
+                    
+                    console.error("Login error:", error);
                 });
-            })
-            .catch((error) => {
-                // Handle errors
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-                
-                // Display error message
-                signupError.textContent = getAuthErrorMessage(error.code);
+        });
+    }
+    
+    // Handle signup form submission
+    if (signupForm) {
+        signupForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                signupError.textContent = "Passwords do not match.";
                 signupError.style.display = 'block';
-                
-                console.error("Signup error:", error);
-            });
-    });
+                return;
+            }
+            
+            // Show loading state
+            const submitBtn = signupForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
+            submitBtn.disabled = true;
+            signupError.style.display = 'none';
+            
+            // Create user in Firebase
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Update user profile with name
+                    return userCredential.user.updateProfile({
+                        displayName: name
+                    }).then(() => {
+                        // Successful account creation
+                        showNotification('Account created successfully!', 'success');
+                        signupModal.style.display = 'none';
+                        
+                        // Reset form
+                        signupForm.reset();
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                        
+                        // Redirect to dashboard
+                        setTimeout(() => {
+                            window.location.href = "dashboard.html";
+                        }, 1000);
+                    });
+                })
+                .catch((error) => {
+                    // Handle errors
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    
+                    // Display error message
+                    signupError.textContent = getAuthErrorMessage(error.code);
+                    signupError.style.display = 'block';
+                    
+                    console.error("Signup error:", error);
+                });
+        });
+    }
     
     // Handle forgot password
-    forgotPassword.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        const email = document.getElementById('loginEmail').value;
-        
-        if (!email) {
-            loginError.textContent = "Please enter your email address to reset your password.";
-            loginError.style.display = 'block';
-            return;
-        }
-        
-        firebase.auth().sendPasswordResetEmail(email)
-            .then(() => {
-                loginError.style.display = 'none';
-                showNotification('Password reset email sent. Check your inbox.', 'success');
-            })
-            .catch((error) => {
-                loginError.textContent = getAuthErrorMessage(error.code);
+    if (forgotPassword) {
+        forgotPassword.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            
+            if (!email) {
+                loginError.textContent = "Please enter your email address to reset your password.";
                 loginError.style.display = 'block';
-                console.error("Password reset error:", error);
-            });
-    });
+                return;
+            }
+            
+            firebase.auth().sendPasswordResetEmail(email)
+                .then(() => {
+                    loginError.style.display = 'none';
+                    showNotification('Password reset email sent. Check your inbox.', 'success');
+                })
+                .catch((error) => {
+                    loginError.textContent = getAuthErrorMessage(error.code);
+                    loginError.style.display = 'block';
+                    console.error("Password reset error:", error);
+                });
+        });
+    }
     
     // Check auth state on page load
     firebase.auth().onAuthStateChanged(function(user) {
         updateUIForAuthState(user);
     });
     
-    // Function to handle user interface updates based on auth state
-    function updateUIForAuthState(user) {
-        if (user) {
-            // User is signed in
-            console.log("User is signed in:", user.displayName);
-            
-            // Update navigation
-            loginBtn.style.display = 'none';
-            signupBtn.style.display = 'none';
-            
-            // Here you would add UI elements for logged in users
-            // For example, a logout button and a link to the dashboard
-            // You could modify your HTML to include these elements with display:none by default
-            
-            // For now, let's just add a notification
-            showNotification('Welcome back, ' + (user.displayName || 'User') + '!', 'success');
-        } else {
-            // User is signed out
-            console.log("User is signed out");
-            
-            // Reset UI
-            loginBtn.style.display = 'block';
-            signupBtn.style.display = 'block';
-        }
-    }
+    // ===== GENERAL UI FUNCTIONALITY =====
     
-    // Function to get user-friendly error messages
-    function getAuthErrorMessage(errorCode) {
-        switch (errorCode) {
-            case 'auth/invalid-email':
-                return 'The email address is not valid.';
-            case 'auth/user-disabled':
-                return 'This account has been disabled.';
-            case 'auth/user-not-found':
-                return 'No account found with this email.';
-            case 'auth/wrong-password':
-                return 'Incorrect password.';
-            case 'auth/email-already-in-use':
-                return 'An account with this email already exists.';
-            case 'auth/weak-password':
-                return 'Password is too weak. Use at least 6 characters.';
-            case 'auth/network-request-failed':
-                return 'Network error. Check your connection and try again.';
-            case 'auth/too-many-requests':
-                return 'Too many unsuccessful login attempts. Try again later.';
-            default:
-                return 'An error occurred. Please try again.';
-        }
-    }
-    
-    // Notification function (you had this in your original script)
-    function showNotification(message, type = 'info') {
-        const notification = document.createElement('div');
-        notification.className = `notification ${type}`;
-        notification.innerHTML = `
-            <div class="notification-content">
-                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
-                <p>${message}</p>
-            </div>
-            <button class="notification-close"><i class="fas fa-times"></i></button>
-        `;
-        
-        document.body.appendChild(notification);
-        
-        // Show notification with animation
-        setTimeout(() => {
-            notification.classList.add('show');
-        }, 10);
-        
-        // Auto-hide after 5 seconds
-        setTimeout(() => {
-            notification.classList.remove('show');
-            setTimeout(() => {
-                notification.remove();
-            }, 300);
-        }, 5000);
-        
-        // Close button functionality
-        const closeBtn = notification.querySelector('.notification-close');
-        closeBtn.addEventListener('click', () => {
-            notification.classList.remove('show');
-            setTimeout(() => {
-                notification.remove();
-            }, 300);
-        });
-    }
-});
-
-// Wait for the DOM to load
-document.addEventListener('DOMContentLoaded', function() {
     // Mobile Navigation Toggle
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
@@ -324,10 +246,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Fixed header behavior - add shadow on scroll
     window.addEventListener('scroll', function() {
         const navbar = document.querySelector('.navbar');
-        if (window.scrollY > 10) {
-            navbar.style.boxShadow = 'var(--shadow-md)';
-        } else {
-            navbar.style.boxShadow = 'var(--shadow-sm)';
+        if (navbar) {
+            if (window.scrollY > 10) {
+                navbar.style.boxShadow = 'var(--shadow-md)';
+            } else {
+                navbar.style.boxShadow = 'var(--shadow-sm)';
+            }
         }
     });
     
@@ -337,26 +261,31 @@ document.addEventListener('DOMContentLoaded', function() {
     faqItems.forEach(item => {
         const question = item.querySelector('.faq-question');
         
-        question.addEventListener('click', () => {
-            // Close all other open FAQs
-            faqItems.forEach(otherItem => {
-                if (otherItem !== item && otherItem.classList.contains('active')) {
-                    otherItem.classList.remove('active');
-                    otherItem.querySelector('.toggle-icon i').className = 'fas fa-plus';
+        if (question) {
+            question.addEventListener('click', () => {
+                // Close all other open FAQs
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item && otherItem.classList.contains('active')) {
+                        otherItem.classList.remove('active');
+                        const otherIcon = otherItem.querySelector('.toggle-icon i');
+                        if (otherIcon) otherIcon.className = 'fas fa-plus';
+                    }
+                });
+                
+                // Toggle current FAQ
+                item.classList.toggle('active');
+                
+                // Toggle icon
+                const icon = item.querySelector('.toggle-icon i');
+                if (icon) {
+                    if (item.classList.contains('active')) {
+                        icon.className = 'fas fa-minus';
+                    } else {
+                        icon.className = 'fas fa-plus';
+                    }
                 }
             });
-            
-            // Toggle current FAQ
-            item.classList.toggle('active');
-            
-            // Toggle icon
-            const icon = item.querySelector('.toggle-icon i');
-            if (item.classList.contains('active')) {
-                icon.className = 'fas fa-minus';
-            } else {
-                icon.className = 'fas fa-plus';
-            }
-        });
+        }
     });
     
     // Testimonial slider functionality
@@ -380,8 +309,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         // Show the current testimonial and activate the corresponding dot
-        testimonials[index].style.display = 'block';
-        dots[index].classList.add('active');
+        if (testimonials[index]) testimonials[index].style.display = 'block';
+        if (dots[index]) dots[index].classList.add('active');
     }
     
     // Initialize the slider
@@ -440,7 +369,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Form validation for future implementation
+    // Form validation
     function setupFormValidation() {
         const forms = document.querySelectorAll('form');
         
@@ -577,107 +506,98 @@ document.addEventListener('DOMContentLoaded', function() {
     yearElements.forEach(element => {
         element.textContent = currentYear;
     });
-    
-    // Sample notification system
-    function showNotification(message, type = 'info') {
-        const notification = document.createElement('div');
-        notification.className = `notification ${type}`;
-        notification.innerHTML = `
-            <div class="notification-content">
-                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
-                <p>${message}</p>
-            </div>
-            <button class="notification-close"><i class="fas fa-times"></i></button>
-        `;
-        
-        document.body.appendChild(notification);
-        
-        // Show notification with animation
-        setTimeout(() => {
-            notification.classList.add('show');
-        }, 10);
-        
-        // Auto-hide after 5 seconds
-        setTimeout(() => {
-            notification.classList.remove('show');
-            setTimeout(() => {
-                notification.remove();
-            }, 300);
-        }, 5000);
-        
-        // Close button functionality
-        const closeBtn = notification.querySelector('.notification-close');
-        closeBtn.addEventListener('click', () => {
-            notification.classList.remove('show');
-            setTimeout(() => {
-                notification.remove();
-            }, 300);
-        });
-    }
-    
-    // Example of how to use the notification system
-    // Uncomment to test
-    /*
-    document.querySelector('.btn-primary').addEventListener('click', function() {
-        showNotification('Welcome to MedShare! Your secure medical information storage.', 'success');
-    });
-    */
-    
-    // Mock authentication for demo purposes
-    const loginForm = document.getElementById('login-form');
-    const signupForm = document.getElementById('signup-form');
-    
-    if (loginForm) {
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Show a loading state
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
-            submitBtn.disabled = true;
-            
-            // Simulate API call delay
-            setTimeout(() => {
-                // Reset button
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-                
-                // Show success notification and redirect (in a real app)
-                showNotification('Successfully logged in! Redirecting to your dashboard...', 'success');
-                
-                // Simulate redirect
-                setTimeout(() => {
-                    window.location.href = "#dashboard";
-                }, 1500);
-            }, 1500);
-        });
-    }
-    
-    if (signupForm) {
-        signupForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Show a loading state
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
-            submitBtn.disabled = true;
-            
-            // Simulate API call delay
-            setTimeout(() => {
-                // Reset button
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-                
-                // Show success notification and redirect (in a real app)
-                showNotification('Account created successfully! Redirecting to your dashboard...', 'success');
-                
-                // Simulate redirect
-                setTimeout(() => {
-                    window.location.href = "#dashboard";
-                }, 1500);
-            }, 2000);
-        });
-    }
 });
+
+// ===== HELPER FUNCTIONS =====
+
+// Function to show notifications
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+            <p>${message}</p>
+        </div>
+        <button class="notification-close"><i class="fas fa-times"></i></button>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Show notification with animation
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+    
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }, 5000);
+    
+    // Close button functionality
+    const closeBtn = notification.querySelector('.notification-close');
+    closeBtn.addEventListener('click', () => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    });
+}
+
+// Function to handle user interface updates based on auth state
+function updateUIForAuthState(user) {
+    const loginBtn = document.querySelector('a[href="#login"]');
+    const signupBtn = document.querySelector('a[href="#signup"]');
+    
+    if (!loginBtn || !signupBtn) return;
+    
+    if (user) {
+        // User is signed in
+        console.log("User is signed in:", user.displayName);
+        
+        // Update navigation
+        loginBtn.style.display = 'none';
+        signupBtn.style.display = 'none';
+        
+        // Here you would add UI elements for logged in users
+        // For example, a logout button and a link to the dashboard
+        // You could modify your HTML to include these elements with display:none by default
+        
+        // For now, let's just add a notification
+        showNotification('Welcome back, ' + (user.displayName || 'User') + '!', 'success');
+    } else {
+        // User is signed out
+        console.log("User is signed out");
+        
+        // Reset UI
+        loginBtn.style.display = 'block';
+        signupBtn.style.display = 'block';
+    }
+}
+
+// Function to get user-friendly error messages
+function getAuthErrorMessage(errorCode) {
+    switch (errorCode) {
+        case 'auth/invalid-email':
+            return 'The email address is not valid.';
+        case 'auth/user-disabled':
+            return 'This account has been disabled.';
+        case 'auth/user-not-found':
+            return 'No account found with this email.';
+        case 'auth/wrong-password':
+            return 'Incorrect password.';
+        case 'auth/email-already-in-use':
+            return 'An account with this email already exists.';
+        case 'auth/weak-password':
+            return 'Password is too weak. Use at least 6 characters.';
+        case 'auth/network-request-failed':
+            return 'Network error. Check your connection and try again.';
+        case 'auth/too-many-requests':
+            return 'Too many unsuccessful login attempts. Try again later.';
+        default:
+            return 'An error occurred. Please try again.';
+    }
+}
