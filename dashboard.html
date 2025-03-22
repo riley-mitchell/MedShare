@@ -238,7 +238,6 @@
                     <li><a href="index.html#testimonials">Testimonials</a></li>
                     <li><a href="index.html#faq">FAQ</a></li>
                     <li><a href="index.html#contact">Contact</a></li>
-                    <li><a href="#" id="logoutBtn" class="btn btn-outline">Log Out</a></li>
                 </ul>
                 <div class="hamburger">
                     <span class="bar"></span>
@@ -256,8 +255,8 @@
                     <i class="fas fa-user"></i>
                 </div>
                 <div class="user-details">
-                    <div class="user-name" id="userName">User</div>
-                    <div class="user-email" id="userEmail">user@example.com</div>
+                    <div class="user-name">Jane Smith</div>
+                    <div class="user-email">jane.smith@example.com</div>
                 </div>
             </div>
             <ul class="menu-list">
@@ -302,12 +301,54 @@
                     <button class="btn btn-outline">View All</button>
                 </div>
                 <div id="recentFiles">
-                    <div class="empty-state">
-                        <i class="fas fa-folder-open empty-icon"></i>
-                        <h3>No files yet</h3>
-                        <p>Upload your first medical document to get started.</p>
-                    </div>
-                    <!-- File list will be populated by JavaScript -->
+                    <!-- Hardcoded sample files list -->
+                    <ul class="file-list">
+                        <li class="file-item">
+                            <div class="file-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="file-info">
+                                <div class="file-name">Blood Test Results.pdf</div>
+                                <div class="file-meta">Uploaded on March 15, 2025 • 2.4 MB</div>
+                            </div>
+                            <div class="file-actions">
+                                <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn" title="Share"><i class="fas fa-share-alt"></i></button>
+                                <button class="action-btn" title="Download"><i class="fas fa-download"></i></button>
+                                <button class="action-btn delete" title="Delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </li>
+                        <li class="file-item">
+                            <div class="file-icon">
+                                <i class="fas fa-file-image"></i>
+                            </div>
+                            <div class="file-info">
+                                <div class="file-name">X-Ray Scan.jpg</div>
+                                <div class="file-meta">Uploaded on March 10, 2025 • 3.7 MB</div>
+                            </div>
+                            <div class="file-actions">
+                                <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn" title="Share"><i class="fas fa-share-alt"></i></button>
+                                <button class="action-btn" title="Download"><i class="fas fa-download"></i></button>
+                                <button class="action-btn delete" title="Delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </li>
+                        <li class="file-item">
+                            <div class="file-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="file-info">
+                                <div class="file-name">Prescription - Dr. Johnson.pdf</div>
+                                <div class="file-meta">Uploaded on March 3, 2025 • 1.2 MB</div>
+                            </div>
+                            <div class="file-actions">
+                                <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn" title="Share"><i class="fas fa-share-alt"></i></button>
+                                <button class="action-btn" title="Download"><i class="fas fa-download"></i></button>
+                                <button class="action-btn delete" title="Delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </section>
 
@@ -316,11 +357,37 @@
                     <h2>Shared Documents</h2>
                 </div>
                 <div id="sharedFiles">
-                    <div class="empty-state">
-                        <i class="fas fa-share-alt empty-icon"></i>
-                        <h3>No shared documents</h3>
-                        <p>Share your medical information securely with healthcare providers.</p>
-                    </div>
+                    <!-- Hardcoded sample shared files list -->
+                    <ul class="file-list">
+                        <li class="file-item">
+                            <div class="file-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="file-info">
+                                <div class="file-name">Complete Medical History.pdf</div>
+                                <div class="file-meta">Shared with Dr. Williams • Expires in 7 days</div>
+                            </div>
+                            <div class="file-actions">
+                                <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn" title="Manage Access"><i class="fas fa-user-lock"></i></button>
+                                <button class="action-btn delete" title="Revoke Access"><i class="fas fa-times-circle"></i></button>
+                            </div>
+                        </li>
+                        <li class="file-item">
+                            <div class="file-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="file-info">
+                                <div class="file-name">Allergy Information.pdf</div>
+                                <div class="file-meta">Shared with County Hospital • Expires in 14 days</div>
+                            </div>
+                            <div class="file-actions">
+                                <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn" title="Manage Access"><i class="fas fa-user-lock"></i></button>
+                                <button class="action-btn delete" title="Revoke Access"><i class="fas fa-times-circle"></i></button>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </section>
         </main>
@@ -334,13 +401,66 @@
         </div>
     </footer>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
-    <!-- Dashboard JavaScript -->
-    <script src="dashboard.js"></script>
+    <!-- Simple JavaScript for interactive elements -->
+    <script>
+        // Show file selection dialog when upload button is clicked
+        document.querySelector('.upload-area button').addEventListener('click', function() {
+            document.getElementById('fileUpload').click();
+        });
+        
+        // Handle file selection (just for UI demonstration)
+        document.getElementById('fileUpload').addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                // Show upload progress for demonstration
+                const progressContainer = document.querySelector('.progress-container');
+                progressContainer.style.display = 'block';
+                
+                let progress = 0;
+                const interval = setInterval(function() {
+                    progress += 5;
+                    if (progress > 100) {
+                        clearInterval(interval);
+                        
+                        // Hide progress after "completion"
+                        setTimeout(function() {
+                            progressContainer.style.display = 'none';
+                            
+                            // Show alert when "upload" is complete
+                            alert('File uploaded successfully! (Demo only - no actual file was uploaded)');
+                            
+                            // Reset file input
+                            document.getElementById('fileUpload').value = '';
+                        }, 500);
+                    } else {
+                        document.querySelector('.progress-bar').style.width = progress + '%';
+                        document.querySelector('.progress-text').textContent = 'Uploading... ' + progress + '%';
+                    }
+                }, 100);
+            }
+        });
+        
+        // Toggle mobile menu
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            this.classList.toggle('active');
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+        
+        // Handle file action buttons (just for UI demonstration)
+        document.querySelectorAll('.action-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const action = this.getAttribute('title');
+                const fileName = this.closest('.file-item').querySelector('.file-name').textContent;
+                
+                if (action === 'Delete' || action === 'Revoke Access') {
+                    if (confirm(`Are you sure you want to ${action.toLowerCase()} "${fileName}"?`)) {
+                        // Just hide the item for demonstration
+                        this.closest('.file-item').style.display = 'none';
+                    }
+                } else {
+                    alert(`${action} action triggered for "${fileName}" (Demo only)`);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
