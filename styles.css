@@ -643,10 +643,9 @@ footer {
     .nav-menu li {
         margin: var(--spacing-xs) 0;
     }
+}
 
-    /* Modal Styles */
-/* Add these styles to your styles.css file if not already there */
-
+/* Modal Styles */
 .modal {
   display: none;
   position: fixed;
@@ -657,17 +656,30 @@ footer {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   overflow: auto;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.modal.active {
+  display: block;
+  opacity: 1;
 }
 
 .modal-content {
-  background-color: #fff;
+  background-color: var(--white);
   margin: 10% auto;
   padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
   width: 90%;
   max-width: 500px;
   position: relative;
+  transform: translateY(-20px);
+  transition: transform 0.3s ease;
+}
+
+.modal.active .modal-content {
+  transform: translateY(0);
 }
 
 .close {
@@ -677,13 +689,15 @@ footer {
   font-size: 28px;
   font-weight: bold;
   cursor: pointer;
-  color: #777;
+  color: var(--text-light);
+  transition: color 0.3s ease;
 }
 
 .close:hover {
-  color: #333;
+  color: var(--text-color);
 }
 
+/* Form Styles */
 .form-group {
   margin-bottom: 20px;
 }
@@ -697,22 +711,47 @@ footer {
 .form-group input {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 1px solid var(--medium-gray);
+  border-radius: var(--radius-sm);
   font-size: 16px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(42, 127, 255, 0.1);
 }
 
 .form-group small {
   display: block;
   margin-top: 5px;
-  color: #777;
+  color: var(--text-light);
+}
+
+/* Form Validation States */
+.form-group.success input {
+  border-color: var(--secondary-color);
+}
+
+.form-group.error input {
+  border-color: var(--accent-color);
 }
 
 .error-message {
   background-color: #ffebee;
-  color: #d32f2f;
+  color: var(--accent-color);
   padding: 10px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
+  margin: 15px 0;
+  font-size: 14px;
+}
+
+.success-message {
+  background-color: #e8f5e9;
+  color: var(--secondary-color);
+  padding: 10px;
+  border-radius: var(--radius-sm);
   margin: 15px 0;
   font-size: 14px;
 }
