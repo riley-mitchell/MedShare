@@ -172,9 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         submitBtn.disabled = false;
                         
                         // Redirect to dashboard
-                        setTimeout(() => {
                             window.location.href = "dashboard.html";
-                        }, 1000);
                     });
                 })
                 .catch((error) => {
