@@ -1,3 +1,305 @@
+// Firebase configuration
+const firebaseConfig = {
+    // Replace with your Firebase config object
+    // You can find this in your Firebase project settings
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Document ready function
+document.addEventListener('DOMContentLoaded', function() {
+    // Original script.js code stays here...
+    
+    // Firebase Authentication UI
+    const loginModal = document.getElementById('loginModal');
+    const signupModal = document.getElementById('signupModal');
+    const loginBtn = document.querySelector('a.btn.btn-outline[href="#login"]');
+    const signupBtn = document.querySelector('a.btn.btn-primary[href="#signup"]');
+    const showLoginBtn = document.getElementById('showLoginBtn');
+    const showSignupBtn = document.getElementById('showSignupBtn');
+    const closeButtons = document.querySelectorAll('.close');
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    const forgotPassword = document.getElementById('forgotPassword');
+    const loginError = document.getElementById('loginError');
+    const signupError = document.getElementById('signupError');
+    const createAccountBtns = document.querySelectorAll('a[href="#signup"].btn');
+    
+    // Update links to open modals
+    loginBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        loginModal.style.display = 'block';
+    });
+    
+    signupBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        signupModal.style.display = 'block';
+    });
+    
+    createAccountBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            signupModal.style.display = 'block';
+        });
+    });
+    
+    // Switch between modals
+    showLoginBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        signupModal.style.display = 'none';
+        loginModal.style.display = 'block';
+    });
+    
+    showSignupBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        loginModal.style.display = 'none';
+        signupModal.style.display = 'block';
+    });
+    
+    // Close modals
+    closeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            loginModal.style.display = 'none';
+            signupModal.style.display = 'none';
+        });
+    });
+    
+    // Close when clicking outside modal
+    window.addEventListener('click', function(e) {
+        if (e.target == loginModal) {
+            loginModal.style.display = 'none';
+        }
+        if (e.target == signupModal) {
+            signupModal.style.display = 'none';
+        }
+    });
+    
+    // Handle login form submission
+    loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        
+        // Show loading state
+        const submitBtn = loginForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+        submitBtn.disabled = true;
+        loginError.style.display = 'none';
+        
+        // Authenticate with Firebase
+        firebase.auth().signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                // Successful login
+                showNotification('Successfully logged in!', 'success');
+                loginModal.style.display = 'none';
+                
+                // Reset form
+                loginForm.reset();
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
+                // Redirect to dashboard or refresh page
+                setTimeout(() => {
+                    window.location.href = "dashboard.html";
+                }, 1000);
+            })
+            .catch((error) => {
+                // Handle errors
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
+                // Display error message
+                loginError.textContent = getAuthErrorMessage(error.code);
+                loginError.style.display = 'block';
+                
+                console.error("Login error:", error);
+            });
+    });
+    
+    // Handle signup form submission
+    signupForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const name = document.getElementById('signupName').value;
+        const email = document.getElementById('signupEmail').value;
+        const password = document.getElementById('signupPassword').value;
+        const confirmPassword = document.getElementById('signupConfirmPassword').value;
+        
+        // Validate passwords match
+        if (password !== confirmPassword) {
+            signupError.textContent = "Passwords do not match.";
+            signupError.style.display = 'block';
+            return;
+        }
+        
+        // Show loading state
+        const submitBtn = signupForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
+        submitBtn.disabled = true;
+        signupError.style.display = 'none';
+        
+        // Create user in Firebase
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                // Update user profile with name
+                return userCredential.user.updateProfile({
+                    displayName: name
+                }).then(() => {
+                    // Successful account creation
+                    showNotification('Account created successfully!', 'success');
+                    signupModal.style.display = 'none';
+                    
+                    // Reset form
+                    signupForm.reset();
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    
+                    // Redirect to dashboard
+                    setTimeout(() => {
+                        window.location.href = "dashboard.html";
+                    }, 1000);
+                });
+            })
+            .catch((error) => {
+                // Handle errors
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
+                // Display error message
+                signupError.textContent = getAuthErrorMessage(error.code);
+                signupError.style.display = 'block';
+                
+                console.error("Signup error:", error);
+            });
+    });
+    
+    // Handle forgot password
+    forgotPassword.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('loginEmail').value;
+        
+        if (!email) {
+            loginError.textContent = "Please enter your email address to reset your password.";
+            loginError.style.display = 'block';
+            return;
+        }
+        
+        firebase.auth().sendPasswordResetEmail(email)
+            .then(() => {
+                loginError.style.display = 'none';
+                showNotification('Password reset email sent. Check your inbox.', 'success');
+            })
+            .catch((error) => {
+                loginError.textContent = getAuthErrorMessage(error.code);
+                loginError.style.display = 'block';
+                console.error("Password reset error:", error);
+            });
+    });
+    
+    // Check auth state on page load
+    firebase.auth().onAuthStateChanged(function(user) {
+        updateUIForAuthState(user);
+    });
+    
+    // Function to handle user interface updates based on auth state
+    function updateUIForAuthState(user) {
+        if (user) {
+            // User is signed in
+            console.log("User is signed in:", user.displayName);
+            
+            // Update navigation
+            loginBtn.style.display = 'none';
+            signupBtn.style.display = 'none';
+            
+            // Here you would add UI elements for logged in users
+            // For example, a logout button and a link to the dashboard
+            // You could modify your HTML to include these elements with display:none by default
+            
+            // For now, let's just add a notification
+            showNotification('Welcome back, ' + (user.displayName || 'User') + '!', 'success');
+        } else {
+            // User is signed out
+            console.log("User is signed out");
+            
+            // Reset UI
+            loginBtn.style.display = 'block';
+            signupBtn.style.display = 'block';
+        }
+    }
+    
+    // Function to get user-friendly error messages
+    function getAuthErrorMessage(errorCode) {
+        switch (errorCode) {
+            case 'auth/invalid-email':
+                return 'The email address is not valid.';
+            case 'auth/user-disabled':
+                return 'This account has been disabled.';
+            case 'auth/user-not-found':
+                return 'No account found with this email.';
+            case 'auth/wrong-password':
+                return 'Incorrect password.';
+            case 'auth/email-already-in-use':
+                return 'An account with this email already exists.';
+            case 'auth/weak-password':
+                return 'Password is too weak. Use at least 6 characters.';
+            case 'auth/network-request-failed':
+                return 'Network error. Check your connection and try again.';
+            case 'auth/too-many-requests':
+                return 'Too many unsuccessful login attempts. Try again later.';
+            default:
+                return 'An error occurred. Please try again.';
+        }
+    }
+    
+    // Notification function (you had this in your original script)
+    function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <div class="notification-content">
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+                <p>${message}</p>
+            </div>
+            <button class="notification-close"><i class="fas fa-times"></i></button>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Show notification with animation
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 10);
+        
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }, 5000);
+        
+        // Close button functionality
+        const closeBtn = notification.querySelector('.notification-close');
+        closeBtn.addEventListener('click', () => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        });
+    }
+});
+
 // Wait for the DOM to load
 document.addEventListener('DOMContentLoaded', function() {
     // Mobile Navigation Toggle
