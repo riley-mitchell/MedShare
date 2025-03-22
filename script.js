@@ -11,6 +11,26 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
+// Modal functions with transitions
+// To open modal
+function openModal(modalId) {
+  const modal = document.getElementById(modalId);
+  modal.style.display = 'block';
+  // Trigger reflow to enable transition
+  void modal.offsetWidth;
+  modal.classList.add('active');
+}
+
+// To close modal
+function closeModal(modalId) {
+  const modal = document.getElementById(modalId);
+  modal.classList.remove('active');
+  // Wait for transition to complete before hiding
+  setTimeout(() => {
+    modal.style.display = 'none';
+  }, 300);
+}
+
 // Single document ready function
 document.addEventListener('DOMContentLoaded', function() {
     // ===== FIREBASE AUTHENTICATION FUNCTIONALITY =====
@@ -28,60 +48,63 @@ document.addEventListener('DOMContentLoaded', function() {
     const signupError = document.getElementById('signupError');
     const createAccountBtns = document.querySelectorAll('a[href="#signup"].btn');
     
-    // Update links to open modals
+    // Update links to use new modal functions
     if (loginBtn) {
         loginBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            loginModal.style.display = 'block';
+            openModal('loginModal');
         });
     }
     
     if (signupBtn) {
         signupBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            signupModal.style.display = 'block';
+            openModal('signupModal');
         });
     }
     
     createAccountBtns.forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.preventDefault();
-            signupModal.style.display = 'block';
+            openModal('signupModal');
         });
     });
     
-    // Switch between modals
+    // Switch between modals using new functions
     if (showLoginBtn) {
         showLoginBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            signupModal.style.display = 'none';
-            loginModal.style.display = 'block';
+            closeModal('signupModal');
+            setTimeout(() => {
+                openModal('loginModal');
+            }, 300); // Wait for previous modal to close
         });
     }
     
     if (showSignupBtn) {
         showSignupBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            loginModal.style.display = 'none';
-            signupModal.style.display = 'block';
+            closeModal('loginModal');
+            setTimeout(() => {
+                openModal('signupModal');
+            }, 300); // Wait for previous modal to close
         });
     }
     
-    // Close modals
+    // Close modals using new closeModal function
     closeButtons.forEach(button => {
         button.addEventListener('click', function() {
-            if (loginModal) loginModal.style.display = 'none';
-            if (signupModal) signupModal.style.display = 'none';
+            const modal = this.closest('.modal');
+            if (modal) {
+                closeModal(modal.id);
+            }
         });
     });
     
     // Close when clicking outside modal
     window.addEventListener('click', function(e) {
-        if (loginModal && e.target == loginModal) {
-            loginModal.style.display = 'none';
-        }
-        if (signupModal && e.target == signupModal) {
-            signupModal.style.display = 'none';
+        if (e.target.classList.contains('modal')) {
+            closeModal(e.target.id);
         }
     });
     
@@ -105,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then((userCredential) => {
                     // Successful login
                     showNotification('Successfully logged in!', 'success');
-                    loginModal.style.display = 'none';
+                    closeModal('loginModal');
                     
                     // Reset form
                     loginForm.reset();
@@ -164,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }).then(() => {
                         // Successful account creation
                         showNotification('Account created successfully!', 'success');
-                        signupModal.style.display = 'none';
+                        closeModal('signupModal');
                         
                         // Reset form
                         signupForm.reset();
@@ -172,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         submitBtn.disabled = false;
                         
                         // Redirect to dashboard
-                            window.location.href = "dashboard.html";
+                        window.location.href = "dashboard.html";
                     });
                 })
                 .catch((error) => {
