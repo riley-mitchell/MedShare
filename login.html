@@ -1,1 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedShare - Log In</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Login-specific styles */
+        .login-container {
+            max-width: 450px;
+            margin: 80px auto;
+            padding: var(--spacing-lg);
+            background-color: white;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .login-logo {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-sm);
+            display: inline-block;
+        }
+        
+        .login-form {
+            margin-top: var(--spacing-md);
+        }
+        
+        .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: var(--spacing-xs);
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(42, 127, 255, 0.2);
+        }
+        
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+            font-size: 0.9rem;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+        
+        .remember-me input {
+            margin-right: 8px;
+        }
+        
+        .forgot-password {
+            color: var(--primary-color);
+        }
+        
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: var(--spacing-md) 0;
+            color: var(--text-light);
+        }
+        
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+        
+        .divider span {
+            padding: 0 var(--spacing-sm);
+        }
+        
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .social-login-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: white;
+            border: 1px solid var(--medium-gray);
+            color: var(--text-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .social-login-btn:hover {
+            background-color: #f5f5f5;
+            transform: translateY(-2px);
+        }
+        
+        .signup-link {
+            text-align: center;
+            margin-top: var(--spacing-md);
+        }
+        
+        .login-background {
+            background-color: var(--light-gray);
+            min-height: calc(100vh - 180px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Error message styling */
+        .error-message {
+            background-color: rgba(255, 99, 71, 0.1);
+            border-left: 3px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--spacing-md);
+            display: none;
+        }
+        
+        /* Add responsive adjustments */
+        @media (max-width: 500px) {
+            .login-container {
+                margin: 40px 20px;
+                padding: var(--spacing-md);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <a href="index.html">
+                        <i class="fas fa-heartbeat"></i> MedShare
+                    </a>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html#features">Features</a></li>
+                    <li><a href="index.html#how-it-works">How It Works</a></li>
+                    <li><a href="index.html#testimonials">Testimonials</a></li>
+                    <li><a href="index.html#faq">FAQ</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
 
+    <main class="login-background">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="login-logo">
+                    <i class="fas fa-heartbeat"></i> MedShare
+                </div>
+                <h1>Welcome Back</h1>
+                <p>Log in to access your secure medical records</p>
+            </div>
+            
+            <div id="error-message" class="error-message">
+                Invalid email or password. Please try again.
+            </div>
+            
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                
+                <div class="form-options">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember" name="remember">
+                        <label for="remember">Remember me</label>
+                    </div>
+                    <a href="#forgot-password" class="forgot-password">Forgot password?</a>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-login">Log In</button>
+                
+                <div class="divider">
+                    <span>or continue with</span>
+                </div>
+                
+                <div class="social-login">
+                    <button type="button" class="social-login-btn" title="Continue with Google">
+                        <i class="fab fa-google"></i>
+                    </button>
+                    <button type="button" class="social-login-btn" title="Continue with Apple">
+                        <i class="fab fa-apple"></i>
+                    </button>
+                    <button type="button" class="social-login-btn" title="Continue with Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </button>
+                </div>
+                
+                <div class="signup-link">
+                    <p>Don't have an account? <a href="signup.html" class="text-primary">Sign up</a></p>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2025 MedShare. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle mobile menu
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            this.classList.toggle('active');
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+        
+        // Handle login form submission
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Simple validation - in a real app, this would connect to backend
+            if (email && password) {
+                // For demo purposes, allow any valid input to proceed to dashboard
+                window.location.href = 'dashboard.html';
+            } else {
+                // Show error message
+                document.getElementById('error-message').style.display = 'block';
+            }
+        });
+        
+        // Handle social login buttons (for demo)
+        document.querySelectorAll('.social-login-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // For demo purposes, redirect to dashboard
+                window.location.href = 'dashboard.html';
+            });
+        });
+    </script>
+</body>
+</html>
