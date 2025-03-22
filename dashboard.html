@@ -4,9 +4,180 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedShare - Your Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Root variables */
+        :root {
+            --primary-color: #2a7fff;
+            --accent-color: #ff4d4d;
+            --text-color: #333;
+            --text-light: #666;
+            --light-gray: #f8f9fa;
+            --medium-gray: #e0e0e0;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Global styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: #f5f5f5;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        /* Button styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #1a6eeb;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(42, 127, 255, 0.1);
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .logo i {
+            margin-right: 8px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin-left: 24px;
+        }
+
+        .nav-menu a {
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary-color);
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+        }
+
+        .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            transition: all 0.3s ease;
+            background-color: var(--text-color);
+        }
+
+        /* Footer */
+        footer {
+            background-color: white;
+            padding: var(--spacing-md) 0;
+            border-top: 1px solid var(--medium-gray);
+            text-align: center;
+        }
+
+        /* Progress bar */
+        .progress-container {
+            margin-top: var(--spacing-md);
+        }
+
+        .upload-progress {
+            height: 6px;
+            background-color: var(--medium-gray);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.2s ease;
+        }
+
+        .progress-text {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
         /* Dashboard-specific styles */
         .dashboard-container {
             display: flex;
@@ -40,15 +211,28 @@
             justify-content: center;
             color: white;
             font-weight: bold;
+            flex-shrink: 0;
         }
         
         .user-details {
             flex: 1;
+            overflow: hidden;
         }
         
         .user-name {
             font-weight: bold;
             margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .user-email {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 0.85rem;
+            color: var(--text-light);
         }
         
         .menu-list {
@@ -78,6 +262,7 @@
         .main-content {
             flex: 1;
             padding: var(--spacing-md);
+            overflow-y: auto;
         }
         
         .dashboard-header {
@@ -197,6 +382,161 @@
             margin-bottom: var(--spacing-sm);
             color: var(--medium-gray);
         }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--radius-md);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--medium-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: var(--spacing-md);
+        }
+
+        .modal-footer {
+            padding: var(--spacing-md);
+            border-top: 1px solid var(--medium-gray);
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--spacing-sm);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .close-modal:hover {
+            color: var(--text-color);
+        }
+
+        .file-viewer {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            display: flex;
+            justify-content: center;
+            background-color: var(--light-gray);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+
+        .file-viewer img {
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+        }
+
+        .file-viewer iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+        }
+
+        .share-options {
+            margin-top: var(--spacing-md);
+        }
+
+        .share-form label {
+            display: block;
+            margin-bottom: var(--spacing-xs);
+            font-weight: 500;
+        }
+
+        .share-form input,
+        .share-form select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: var(--spacing-sm);
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--radius-sm);
+        }
+
+        .shared-with-list {
+            margin-top: var(--spacing-md);
+        }
+
+        .shared-user {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-sm);
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .all-files-section {
+            display: none;
+        }
+
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+        }
+
+        .file-card {
+            background-color: white;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-sm);
+            padding: var(--spacing-sm);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .file-card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .file-card-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .file-card-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .file-card-date {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
         
         /* Responsive adjustments */
         @media (max-width: 768px) {
@@ -219,6 +559,60 @@
             .menu-list li {
                 margin-right: var(--spacing-sm);
                 margin-bottom: 0;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background-color: white;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .nav-menu li {
+                margin: 0;
+                padding: 15px 0;
+                border-bottom: 1px solid var(--medium-gray);
+            }
+
+            .hamburger.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+
+            .hamburger.active .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--spacing-sm);
+            }
+
+            .file-item {
+                flex-wrap: wrap;
+            }
+
+            .file-actions {
+                width: 100%;
+                justify-content: flex-end;
+                margin-top: var(--spacing-xs);
             }
         }
     </style>
@@ -272,7 +666,7 @@
         <main class="main-content">
             <div class="dashboard-header">
                 <h1 class="page-title">My Dashboard</h1>
-                <button class="btn btn-primary"><i class="fas fa-plus"></i> New Upload</button>
+                <button class="btn btn-primary" id="newUploadBtn"><i class="fas fa-plus"></i> New Upload</button>
             </div>
 
             <section class="card">
@@ -295,15 +689,14 @@
                 </div>
             </section>
 
-            <section class="card">
+            <section class="card" id="recentUploadsSection">
                 <div class="card-header">
                     <h2>Recent Uploads</h2>
-                    <button class="btn btn-outline">View All</button>
+                    <button class="btn btn-outline" id="viewAllBtn">View All</button>
                 </div>
                 <div id="recentFiles">
-                    <!-- Hardcoded sample files list -->
                     <ul class="file-list">
-                        <li class="file-item">
+                        <li class="file-item" data-filename="Blood Test Results.pdf" data-filetype="pdf" data-filedate="March 15, 2025" data-filesize="2.4 MB">
                             <div class="file-icon">
                                 <i class="fas fa-file-pdf"></i>
                             </div>
@@ -312,13 +705,13 @@
                                 <div class="file-meta">Uploaded on March 15, 2025 • 2.4 MB</div>
                             </div>
                             <div class="file-actions">
-                                <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
-                                <button class="action-btn" title="Share"><i class="fas fa-share-alt"></i></button>
-                                <button class="action-btn" title="Download"><i class="fas fa-download"></i></button>
-                                <button class="action-btn delete" title="Delete"><i class="fas fa-trash"></i></button>
+                                <button class="action-btn view-file" title="View"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn share-file" title="Share"><i class="fas fa-share-alt"></i></button>
+                                <button class="action-btn download-file" title="Download"><i class="fas fa-download"></i></button>
+                                <button class="action-btn delete delete-file" title="Delete"><i class="fas fa-trash"></i></button>
                             </div>
                         </li>
-                        <li class="file-item">
+                        <li class="file-item" data-filename="X-Ray Scan.jpg" data-filetype="image" data-filedate="March 10, 2025" data-filesize="3.7 MB">
                             <div class="file-icon">
                                 <i class="fas fa-file-image"></i>
                             </div>
@@ -327,13 +720,13 @@
                                 <div class="file-meta">Uploaded on March 10, 2025 • 3.7 MB</div>
                             </div>
                             <div class="file-actions">
-                                <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
-                                <button class="action-btn" title="Share"><i class="fas fa-share-alt"></i></button>
-                                <button class="action-btn" title="Download"><i class="fas fa-download"></i></button>
-                                <button class="action-btn delete" title="Delete"><i class="fas fa-trash"></i></button>
+                                <button class="action-btn view-file" title="View"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn share-file" title="Share"><i class="fas fa-share-alt"></i></button>
+                                <button class="action-btn download-file" title="Download"><i class="fas fa-download"></i></button>
+                                <button class="action-btn delete delete-file" title="Delete"><i class="fas fa-trash"></i></button>
                             </div>
                         </li>
-                        <li class="file-item">
+                        <li class="file-item" data-filename="Prescription - Dr. Johnson.pdf" data-filetype="pdf" data-filedate="March 3, 2025" data-filesize="1.2 MB">
                             <div class="file-icon">
                                 <i class="fas fa-file-pdf"></i>
                             </div>
@@ -342,24 +735,23 @@
                                 <div class="file-meta">Uploaded on March 3, 2025 • 1.2 MB</div>
                             </div>
                             <div class="file-actions">
-                                <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
-                                <button class="action-btn" title="Share"><i class="fas fa-share-alt"></i></button>
-                                <button class="action-btn" title="Download"><i class="fas fa-download"></i></button>
-                                <button class="action-btn delete" title="Delete"><i class="fas fa-trash"></i></button>
+                                <button class="action-btn view-file" title="View"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn share-file" title="Share"><i class="fas fa-share-alt"></i></button>
+                                <button class="action-btn download-file" title="Download"><i class="fas fa-download"></i></button>
+                                <button class="action-btn delete delete-file" title="Delete"><i class="fas fa-trash"></i></button>
                             </div>
                         </li>
                     </ul>
                 </div>
             </section>
 
-            <section class="card">
+            <section class="card" id="sharedDocumentsSection">
                 <div class="card-header">
                     <h2>Shared Documents</h2>
                 </div>
                 <div id="sharedFiles">
-                    <!-- Hardcoded sample shared files list -->
                     <ul class="file-list">
-                        <li class="file-item">
+                        <li class="file-item" data-filename="Complete Medical History.pdf" data-filetype="pdf" data-shared-with="Dr. Williams" data-expiry="7 days">
                             <div class="file-icon">
                                 <i class="fas fa-file-pdf"></i>
                             </div>
@@ -368,12 +760,12 @@
                                 <div class="file-meta">Shared with Dr. Williams • Expires in 7 days</div>
                             </div>
                             <div class="file-actions">
-                                <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
-                                <button class="action-btn" title="Manage Access"><i class="fas fa-user-lock"></i></button>
-                                <button class="action-btn delete" title="Revoke Access"><i class="fas fa-times-circle"></i></button>
+                                <button class="action-btn view-file" title="View"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn manage-access" title="Manage Access"><i class="fas fa-user-lock"></i></button>
+                                <button class="action-btn delete revoke-access" title="Revoke Access"><i class="fas fa-times-circle"></i></button>
                             </div>
                         </li>
-                        <li class="file-item">
+                        <li class="file-item" data-filename="Allergy Information.pdf" data-filetype="pdf" data-shared-with="County Hospital" data-expiry="14 days">
                             <div class="file-icon">
                                 <i class="fas fa-file-pdf"></i>
                             </div>
@@ -382,85 +774,80 @@
                                 <div class="file-meta">Shared with County Hospital • Expires in 14 days</div>
                             </div>
                             <div class="file-actions">
-                                <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
-                                <button class="action-btn" title="Manage Access"><i class="fas fa-user-lock"></i></button>
-                                <button class="action-btn delete" title="Revoke Access"><i class="fas fa-times-circle"></i></button>
+                                <button class="action-btn view-file" title="View"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn manage-access" title="Manage Access"><i class="fas fa-user-lock"></i></button>
+                                <button class="action-btn delete revoke-access" title="Revoke Access"><i class="fas fa-times-circle"></i></button>
                             </div>
                         </li>
                     </ul>
                 </div>
             </section>
+
+            <section class="card all-files-section" id="allFilesSection">
+                <div class="card-header">
+                    <h2>All Files</h2>
+                    <button class="btn btn-outline" id="backToDashboardBtn">Back to Dashboard</button>
+                </div>
+                <div class="file-grid">
+                    <div class="file-card" data-filename="Blood Test Results.pdf" data-filetype="pdf">
+                        <div class="file-card-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="file-card-name">Blood Test Results.pdf</div>
+                        <div class="file-card-date">March 15, 2025</div>
+                    </div>
+                    <div class="file-card" data-filename="X-Ray Scan.jpg" data-filetype="image">
+                        <div class="file-card-icon">
+                            <i class="fas fa-file-image"></i>
+                        </div>
+                        <div class="file-card-name">X-Ray Scan.jpg</div>
+                        <div class="file-card-date">March 10, 2025</div>
+                    </div>
+                    <div class="file-card" data-filename="Prescription - Dr. Johnson.pdf" data-filetype="pdf">
+                        <div class="file-card-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="file-card-name">Prescription - Dr. Johnson.pdf</div>
+                        <div class="file-card-date">March 3, 2025</div>
+                    </div>
+                    <div class="file-card" data-filename="Complete Medical History.pdf" data-filetype="pdf">
+                        <div class="file-card-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="file-card-name">Complete Medical History.pdf</div>
+                        <div class="file-card-date">February 25, 2025</div>
+                    </div>
+                    <div class="file-card" data-filename="Allergy Information.pdf" data-filetype="pdf">
+                        <div class="file-card-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="file-card-name">Allergy Information.pdf</div>
+                        <div class="file-card-date">February 20, 2025</div>
+                    </div>
+                    <div class="file-card" data-filename="MRI Results.jpg" data-filetype="image">
+                        <div class="file-card-icon">
+                            <i class="fas fa-file-image"></i>
+                        </div>
+                        <div class="file-card-name">MRI Results.jpg</div>
+                        <div class="file-card-date">February 15, 2025</div>
+                    </div>
+                    <div class="file-card" data-filename="Annual Checkup.pdf" data-filetype="pdf">
+                        <div class="file-card-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="file-card-name">Annual Checkup.pdf</div>
+                        <div class="file-card-date">February 10, 2025</div>
+                    </div>
+                    <div class="file-card" data-filename="Vaccination Record.pdf" data-filetype="pdf">
+                        <div class="file-card-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="file-card-name">Vaccination Record.pdf</div>
+                        <div class="file-card-date">January 28, 2025</div>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 
-    <footer>
-        <div class="container">
-            <div class="footer-bottom">
-                <p>&copy; 2025 MedShare. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Simple JavaScript for interactive elements -->
-    <script>
-        // Show file selection dialog when upload button is clicked
-        document.querySelector('.upload-area button').addEventListener('click', function() {
-            document.getElementById('fileUpload').click();
-        });
-        
-        // Handle file selection (just for UI demonstration)
-        document.getElementById('fileUpload').addEventListener('change', function(e) {
-            if (e.target.files.length > 0) {
-                // Show upload progress for demonstration
-                const progressContainer = document.querySelector('.progress-container');
-                progressContainer.style.display = 'block';
-                
-                let progress = 0;
-                const interval = setInterval(function() {
-                    progress += 5;
-                    if (progress > 100) {
-                        clearInterval(interval);
-                        
-                        // Hide progress after "completion"
-                        setTimeout(function() {
-                            progressContainer.style.display = 'none';
-                            
-                            // Show alert when "upload" is complete
-                            alert('File uploaded successfully! (Demo only - no actual file was uploaded)');
-                            
-                            // Reset file input
-                            document.getElementById('fileUpload').value = '';
-                        }, 500);
-                    } else {
-                        document.querySelector('.progress-bar').style.width = progress + '%';
-                        document.querySelector('.progress-text').textContent = 'Uploading... ' + progress + '%';
-                    }
-                }, 100);
-            }
-        });
-        
-        // Toggle mobile menu
-        document.querySelector('.hamburger').addEventListener('click', function() {
-            this.classList.toggle('active');
-            document.querySelector('.nav-menu').classList.toggle('active');
-        });
-        
-        // Handle file action buttons (just for UI demonstration)
-        document.querySelectorAll('.action-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const action = this.getAttribute('title');
-                const fileName = this.closest('.file-item').querySelector('.file-name').textContent;
-                
-                if (action === 'Delete' || action === 'Revoke Access') {
-                    if (confirm(`Are you sure you want to ${action.toLowerCase()} "${fileName}"?`)) {
-                        // Just hide the item for demonstration
-                        this.closest('.file-item').style.display = 'none';
-                    }
-                } else {
-                    alert(`${action} action triggered for "${fileName}" (Demo only)`);
-                }
-            });
-        });
-    </script>
-</body>
-</html>
+    <!-- Modals -->
