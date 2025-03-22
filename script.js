@@ -1,16 +1,3 @@
-// Firebase configuration - IMPORTANT: Replace with your actual Firebase config
-const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
-};
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-
 // Modal functions with transitions
 // To open modal
 function openModal(modalId) {
@@ -33,65 +20,20 @@ function closeModal(modalId) {
 
 // Single document ready function
 document.addEventListener('DOMContentLoaded', function() {
-    // ===== FIREBASE AUTHENTICATION FUNCTIONALITY =====
-    const loginModal = document.getElementById('loginModal');
-    const signupModal = document.getElementById('signupModal');
-    const loginBtn = document.querySelector('a[href="#login"]');
-    const signupBtn = document.querySelector('a[href="#signup"]');
-    const showLoginBtn = document.getElementById('showLoginBtn');
-    const showSignupBtn = document.getElementById('showSignupBtn');
-    const closeButtons = document.querySelectorAll('.close');
-    const loginForm = document.getElementById('loginForm');
-    const signupForm = document.getElementById('signupForm');
-    const forgotPassword = document.getElementById('forgotPassword');
-    const loginError = document.getElementById('loginError');
-    const signupError = document.getElementById('signupError');
-    const createAccountBtns = document.querySelectorAll('a[href="#signup"].btn');
+    // ===== GENERAL UI FUNCTIONALITY =====
     
-    // Update links to use new modal functions
-    if (loginBtn) {
-        loginBtn.addEventListener('click', function(e) {
+    // Handle modal buttons
+    const modalButtons = document.querySelectorAll('[data-modal]');
+    modalButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
             e.preventDefault();
-            openModal('loginModal');
-        });
-    }
-    
-    if (signupBtn) {
-        signupBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            openModal('signupModal');
-        });
-    }
-    
-    createAccountBtns.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            openModal('signupModal');
+            const modalId = this.getAttribute('data-modal');
+            openModal(modalId);
         });
     });
     
-    // Switch between modals using new functions
-    if (showLoginBtn) {
-        showLoginBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            closeModal('signupModal');
-            setTimeout(() => {
-                openModal('loginModal');
-            }, 300); // Wait for previous modal to close
-        });
-    }
-    
-    if (showSignupBtn) {
-        showSignupBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            closeModal('loginModal');
-            setTimeout(() => {
-                openModal('signupModal');
-            }, 300); // Wait for previous modal to close
-        });
-    }
-    
-    // Close modals using new closeModal function
+    // Close buttons for modals
+    const closeButtons = document.querySelectorAll('.close');
     closeButtons.forEach(button => {
         button.addEventListener('click', function() {
             const modal = this.closest('.modal');
@@ -107,143 +49,6 @@ document.addEventListener('DOMContentLoaded', function() {
             closeModal(e.target.id);
         }
     });
-    
-    // Handle login form submission
-    if (loginForm) {
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            // Show loading state
-            const submitBtn = loginForm.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
-            submitBtn.disabled = true;
-            loginError.style.display = 'none';
-            
-            // Authenticate with Firebase
-            firebase.auth().signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // Successful login
-                    showNotification('Successfully logged in!', 'success');
-                    closeModal('loginModal');
-                    
-                    // Reset form
-                    loginForm.reset();
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                    
-                    // Redirect to dashboard or refresh page
-                    setTimeout(() => {
-                        window.location.href = "dashboard.html";
-                    }, 1000);
-                })
-                .catch((error) => {
-                    // Handle errors
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                    
-                    // Display error message
-                    loginError.textContent = getAuthErrorMessage(error.code);
-                    loginError.style.display = 'block';
-                    
-                    console.error("Login error:", error);
-                });
-        });
-    }
-    
-    // Handle signup form submission
-    if (signupForm) {
-        signupForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('signupName').value;
-            const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
-            const confirmPassword = document.getElementById('signupConfirmPassword').value;
-            
-            // Validate passwords match
-            if (password !== confirmPassword) {
-                signupError.textContent = "Passwords do not match.";
-                signupError.style.display = 'block';
-                return;
-            }
-            
-            // Show loading state
-            const submitBtn = signupForm.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
-            submitBtn.disabled = true;
-            signupError.style.display = 'none';
-            
-            // Create user in Firebase
-            firebase.auth().createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // Update user profile with name
-                    return userCredential.user.updateProfile({
-                        displayName: name
-                    }).then(() => {
-                        // Successful account creation
-                        showNotification('Account created successfully!', 'success');
-                        closeModal('signupModal');
-                        
-                        // Reset form
-                        signupForm.reset();
-                        submitBtn.innerHTML = originalText;
-                        submitBtn.disabled = false;
-                        
-                        // Redirect to dashboard
-                        window.location.href = "dashboard.html";
-                    });
-                })
-                .catch((error) => {
-                    // Handle errors
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                    
-                    // Display error message
-                    signupError.textContent = getAuthErrorMessage(error.code);
-                    signupError.style.display = 'block';
-                    
-                    console.error("Signup error:", error);
-                });
-        });
-    }
-    
-    // Handle forgot password
-    if (forgotPassword) {
-        forgotPassword.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('loginEmail').value;
-            
-            if (!email) {
-                loginError.textContent = "Please enter your email address to reset your password.";
-                loginError.style.display = 'block';
-                return;
-            }
-            
-            firebase.auth().sendPasswordResetEmail(email)
-                .then(() => {
-                    loginError.style.display = 'none';
-                    showNotification('Password reset email sent. Check your inbox.', 'success');
-                })
-                .catch((error) => {
-                    loginError.textContent = getAuthErrorMessage(error.code);
-                    loginError.style.display = 'block';
-                    console.error("Password reset error:", error);
-                });
-        });
-    }
-    
-    // Check auth state on page load
-    firebase.auth().onAuthStateChanged(function(user) {
-        updateUIForAuthState(user);
-    });
-    
-    // ===== GENERAL UI FUNCTIONALITY =====
     
     // Mobile Navigation Toggle
     const hamburger = document.querySelector('.hamburger');
@@ -369,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
-            if (this.getAttribute('href') !== '#') {
+            if (this.getAttribute('href') !== '#' && !this.hasAttribute('data-modal')) {
                 e.preventDefault();
                 
                 const targetId = this.getAttribute('href');
@@ -390,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Form validation
+    // Basic Form validation
     function setupFormValidation() {
         const forms = document.querySelectorAll('form');
         
@@ -434,7 +239,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Call form validation setup
     setupFormValidation();
     
-    // Simulate data loading - for dashboard pages
+    // Simulate data loading - for content sections
     function simulateLoading() {
         const loaders = document.querySelectorAll('.loader');
         
@@ -459,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function() {
         simulateLoading();
     }
     
-    // Document upload preview for future implementation
+    // Document upload preview functionality
     const fileInputs = document.querySelectorAll('input[type="file"]');
     
     fileInputs.forEach(input => {
@@ -566,59 +371,4 @@ function showNotification(message, type = 'info') {
             notification.remove();
         }, 300);
     });
-}
-
-// Function to handle user interface updates based on auth state
-function updateUIForAuthState(user) {
-    const loginBtn = document.querySelector('a[href="#login"]');
-    const signupBtn = document.querySelector('a[href="#signup"]');
-    
-    if (!loginBtn || !signupBtn) return;
-    
-    if (user) {
-        // User is signed in
-        console.log("User is signed in:", user.displayName);
-        
-        // Update navigation
-        loginBtn.style.display = 'none';
-        signupBtn.style.display = 'none';
-        
-        // Here you would add UI elements for logged in users
-        // For example, a logout button and a link to the dashboard
-        // You could modify your HTML to include these elements with display:none by default
-        
-        // For now, let's just add a notification
-        showNotification('Welcome back, ' + (user.displayName || 'User') + '!', 'success');
-    } else {
-        // User is signed out
-        console.log("User is signed out");
-        
-        // Reset UI
-        loginBtn.style.display = 'block';
-        signupBtn.style.display = 'block';
-    }
-}
-
-// Function to get user-friendly error messages
-function getAuthErrorMessage(errorCode) {
-    switch (errorCode) {
-        case 'auth/invalid-email':
-            return 'The email address is not valid.';
-        case 'auth/user-disabled':
-            return 'This account has been disabled.';
-        case 'auth/user-not-found':
-            return 'No account found with this email.';
-        case 'auth/wrong-password':
-            return 'Incorrect password.';
-        case 'auth/email-already-in-use':
-            return 'An account with this email already exists.';
-        case 'auth/weak-password':
-            return 'Password is too weak. Use at least 6 characters.';
-        case 'auth/network-request-failed':
-            return 'Network error. Check your connection and try again.';
-        case 'auth/too-many-requests':
-            return 'Too many unsuccessful login attempts. Try again later.';
-        default:
-            return 'An error occurred. Please try again.';
-    }
 }
