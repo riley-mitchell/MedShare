@@ -1,1 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Access</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <header>
+        <h1>Emergency Access</h1>
+        <nav>
+            <a href="index.html">Back to Home</a>
+        </nav>
+    </header>
 
+    <main class="emergency-container">
+        <div class="emergency-card">
+            <h2>Emergency Patient Access</h2>
+            <p>Please scan a QR code or enter the Emergency ID (EID) to access patient information.</p>
+            
+            <div class="input-group">
+                <label for="eid">Emergency ID (EID):</label>
+                <input type="text" id="eid" name="eid" placeholder="Enter Emergency ID">
+            </div>
+            
+            <div class="button-group">
+                <button id="scan-qr" class="primary-btn">Scan QR Code</button>
+                <button id="submit-eid" class="primary-btn">Access Patient</button>
+            </div>
+            
+            <div id="camera-container" class="hidden">
+                <div class="camera-view">
+                    <video id="qr-video" autoplay></video>
+                    <button id="close-camera" class="secondary-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Show camera when scan button is clicked
+        document.getElementById('scan-qr').addEventListener('click', function() {
+            document.getElementById('camera-container').classList.remove('hidden');
+            
+            // This would normally initialize the camera and QR scanning
+            // For demonstration, we're just showing the camera interface
+            console.log('Camera would be initialized here in a real app');
+            
+            // Simulate finding a QR code after 3 seconds
+            setTimeout(function() {
+                document.getElementById('eid').value = "E12345678";
+                document.getElementById('camera-container').classList.add('hidden');
+            }, 3000);
+        });
+        
+        // Close camera view
+        document.getElementById('close-camera').addEventListener('click', function() {
+            document.getElementById('camera-container').classList.add('hidden');
+        });
+        
+        // Navigate to dashboard when submit button is clicked
+        document.getElementById('submit-eid').addEventListener('click', function() {
+            const eid = document.getElementById('eid').value.trim();
+            if (eid) {
+                window.location.href = `emergency_dashboard.html?eid=${eid}`;
+            } else {
+                alert('Please enter an Emergency ID or scan a QR code');
+            }
+        });
+    </script>
+</body>
+</html>
