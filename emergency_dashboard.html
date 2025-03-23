@@ -1,1 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Patient Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <header>
+        <h1>Emergency Patient Dashboard</h1>
+        <nav>
+            <a href="emergency.html">Back to Emergency Access</a>
+            <a href="index.html">Home</a>
+        </nav>
+    </header>
 
+    <main class="dashboard-container">
+        <div class="patient-header">
+            <div class="patient-info">
+                <h2 id="patient-name">John Doe</h2>
+                <p id="patient-id">EID: <span id="eid-display">E12345678</span></p>
+                <p id="patient-dob">DOB: 05/12/1975 (49 years)</p>
+            </div>
+            <div class="alert-box critical">
+                <span class="alert-icon">⚠️</span>
+                <span class="alert-text">CRITICAL ALLERGIES: Penicillin, Sulfa</span>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <section class="dashboard-card vital-signs">
+                <h3>Vital Signs</h3>
+                <div class="vital-item">
+                    <span class="vital-label">Blood Type:</span>
+                    <span class="vital-value">A+</span>
+                </div>
+                <div class="vital-item">
+                    <span class="vital-label">Last BP:</span>
+                    <span class="vital-value">138/85</span>
+                </div>
+                <div class="vital-item">
+                    <span class="vital-label">Heart Rate:</span>
+                    <span class="vital-value">78 bpm</span>
+                </div>
+                <div class="vital-item">
+                    <span class="vital-label">Weight:</span>
+                    <span class="vital-value">182 lbs</span>
+                </div>
+                <div class="vital-item">
+                    <span class="vital-label">Height:</span>
+                    <span class="vital-value">5'11"</span>
+                </div>
+            </section>
+
+            <section class="dashboard-card medications">
+                <h3>Current Medications</h3>
+                <ul class="med-list">
+                    <li>
+                        <div class="med-name">Lisinopril 10mg</div>
+                        <div class="med-details">1 tablet daily for hypertension</div>
+                    </li>
+                    <li>
+                        <div class="med-name">Atorvastatin 20mg</div>
+                        <div class="med-details">1 tablet at bedtime for cholesterol</div>
+                    </li>
+                    <li>
+                        <div class="med-name">Metformin 500mg</div>
+                        <div class="med-details">1 tablet twice daily for Type 2 diabetes</div>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="dashboard-card medical-history">
+                <h3>Medical History</h3>
+                <div class="history-item">
+                    <div class="history-date">03/02/2025</div>
+                    <div class="history-details">
+                        <strong>ER Visit:</strong> Chest pain, evaluated for MI, negative. Diagnosed with GERD.
+                    </div>
+                </div>
+                <div class="history-item">
+                    <div class="history-date">11/15/2024</div>
+                    <div class="history-details">
+                        <strong>Annual Physical:</strong> Type 2 Diabetes, Hypertension, Hyperlipidemia - all stable on current medications.
+                    </div>
+                </div>
+                <div class="history-item">
+                    <div class="history-date">06/22/2024</div>
+                    <div class="history-details">
+                        <strong>Orthopedic Consult:</strong> Right knee osteoarthritis, physical therapy recommended.
+                    </div>
+                </div>
+            </section>
+
+            <section class="dashboard-card emergency-contacts">
+                <h3>Emergency Contacts</h3>
+                <div class="contact-item">
+                    <div class="contact-name">Sarah Doe (Spouse)</div>
+                    <div class="contact-phone">(555) 123-4567</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-name">Michael Doe (Son)</div>
+                    <div class="contact-phone">(555) 987-6543</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-name">Dr. Robert Smith (Primary Physician)</div>
+                    <div class="contact-phone">(555) 456-7890</div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        // Extract EID from URL parameters
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const eid = urlParams.get('eid');
+            
+            if (eid) {
+                document.getElementById('eid-display').textContent = eid;
+                
+                // In a real app, this would fetch patient data based on the EID
+                console.log(`Would fetch patient data for EID: ${eid}`);
+                
+                // For demo purposes, we're using the hardcoded data
+            }
+        });
+    </script>
+</body>
+</html>
