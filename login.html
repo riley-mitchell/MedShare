@@ -152,6 +152,31 @@
             display: none;
         }
         
+        /* Medical professional link styling */
+        .medical-pro-link {
+            text-align: center;
+            margin-top: var(--spacing-md);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--medium-gray);
+        }
+        
+        .medical-pro-link a {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary-color);
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        
+        .medical-pro-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .medical-pro-link i {
+            margin-right: 8px;
+        }
+        
         /* Add responsive adjustments */
         @media (max-width: 500px) {
             .login-container {
@@ -239,6 +264,13 @@
                 
                 <div class="signup-link">
                     <p>Don't have an account? <a href="signup.html" class="text-primary">Sign up</a></p>
+                </div>
+                
+                <!-- Medical Professionals Link -->
+                <div class="medical-pro-link">
+                    <a href="doctor_dashboard.html">
+                        <i class="fas fa-user-md"></i> Medical Professionals Sign In Here
+                    </a>
                 </div>
             </form>
         </div>
