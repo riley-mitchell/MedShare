@@ -378,4 +378,31 @@
              }, 2000);
          });
      }
+
+  // Emergency sharing toggle functionality
+document.getElementById('emergencyToggle').addEventListener('change', function() {
+    const statusElement = document.querySelector('.status-indicator');
+    if (this.checked) {
+        statusElement.textContent = 'Active';
+        statusElement.classList.remove('inactive');
+        statusElement.classList.add('active');
+        // Show a confirmation dialog
+        if (confirm('Enabling Emergency Sharing will allow emergency medical services to access your critical medical information in case of an emergency. Continue?')) {
+            // You would typically make an API call here to update the user's preferences
+            console.log('Emergency sharing activated');
+        } else {
+            // User canceled, reset the toggle
+            this.checked = false;
+            statusElement.textContent = 'Inactive';
+            statusElement.classList.remove('active');
+            statusElement.classList.add('inactive');
+        }
+    } else {
+        statusElement.textContent = 'Inactive';
+        statusElement.classList.remove('active');
+        statusElement.classList.add('inactive');
+        console.log('Emergency sharing deactivated');
+    }
+});
+  
  });
