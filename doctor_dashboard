@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedShare - Doctor Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <a href="index.html">
+                        <i class="fas fa-heartbeat"></i> MedShare
+                    </a>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html#features">Features</a></li>
+                    <li><a href="index.html#how-it-works">How It Works</a></li>
+                    <li><a href="index.html#testimonials">Testimonials</a></li>
+                    <li><a href="index.html#faq">FAQ</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="user-info">
+                <div class="avatar">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="user-details">
+                    <div class="user-name">Dr. Michelle Williams</div>
+                    <div class="user-email">dr.williams@medhospital.com</div>
+                </div>
+            </div>
+            <ul class="menu-list">
+                <li><a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fas fa-users"></i> My Patients</a></li>
+                <li><a href="#"><i class="fas fa-file-medical"></i> Shared Records</a></li>
+                <li><a href="#"><i class="fas fa-calendar-alt"></i> Appointments</a></li>
+                <li><a href="#"><i class="fas fa-prescription"></i> Prescriptions</a></li>
+                <li><a href="#"><i class="fas fa-comment-medical"></i> Messages</a></li>
+                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div class="dashboard-header">
+                <h1 class="page-title">Doctor Dashboard</h1>
+                <button class="btn btn-primary" id="newPatientBtn"><i class="fas fa-user-plus"></i> Add Patient</button>
+            </div>
+
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-value">42</div>
+                    <div class="stat-label">Active Patients</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">Today's Appointments</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-file-medical"></i></div>
+                    <div class="stat-value">17</div>
+                    <div class="stat-label">New Shared Records</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-bell"></i></div>
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">Urgent Notifications</div>
+                </div>
+            </section>
+
+            <section class="card">
+                <div class="card-header">
+                    <h2>Recent Patients</h2>
+                    <button class="btn btn-outline" id="viewAllPatientsBtn">View All Patients</button>
+                </div>
+                <ul class="patient-list" id="recentPatientsList">
+                    <li class="patient-item" data-patient-id="patient1">
+                        <div class="patient-avatar">JS</div>
+                        <div class="patient-info">
+                            <div class="patient-name">Jane Smith <span class="badge urgent">Urgent</span></div>
+                            <div class="patient-details">
+                                <div class="patient-detail"><i class="fas fa-calendar-alt"></i> 45 years</div>
+                                <div class="patient-detail"><i class="fas fa-clipboard-list"></i> Heart condition</div>
+                                <div class="patient-detail"><i class="fas fa-clock"></i> Last visit: 2 days ago</div>
+                            </div>
+                        </div>
+                        <div class="patient-actions">
+                            <button class="action-btn" title="View Profile"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn" title="Message"><i class="fas fa-comment"></i></button>
+                        </div>
+                    </li>
+                    <li class="patient-item" data-patient-id="patient2">
+                        <div class="patient-avatar">RJ</div>
+                        <div class="patient-info">
+                            <div class="patient-name">Robert Johnson <span class="badge new">New</span></div>
+                            <div class="patient-details">
+                                <div class="patient-detail"><i class="fas fa-calendar-alt"></i> 32 years</div>
+                                <div class="patient-detail"><i class="fas fa-clipboard-list"></i> Hypertension</div>
+                                <div class="patient-detail"><i class="fas fa-clock"></i> Last visit: Today</div>
+                            </div>
+                        </div>
+                        <div class="patient-actions">
+                            <button class="action-btn" title="View Profile"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn" title="Message"><i class="fas fa-comment"></i></button>
+                        </div>
+                    </li>
+                    <li class="patient-item" data-patient-id="patient3">
+                        <div class="patient-avatar">ML</div>
+                        <div class="patient-info">
+                            <div class="patient-name">Maria Lopez</div>
+                            <div class="patient-details">
+                                <div class="patient-detail"><i class="fas fa-calendar-alt"></i> 56 years</div>
+                                <div class="patient-detail"><i class="fas fa-clipboard-list"></i> Diabetes Type 2</div>
+                                <div class="patient-detail"><i class="fas fa-clock"></i> Last visit: 1 week ago</div>
+                            </div>
+                        </div>
+                        <div class="patient-actions">
+                            <button class="action-btn" title="View Profile"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn" title="Message"><i class="fas fa-comment"></i></button>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="card">
+                <div class="card-header">
+                    <h2>Recently Shared Medical Records</h2>
+                    <button class="btn btn-outline" id="viewAllRecordsBtn">View All Records</button>
+                </div>
+                <div id="sharedRecords">
+                    <ul class="file-list">
+                        <li class="file-item">
+                            <div class="file-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="file-info">
+                                <div class="file-name">Complete Medical History.pdf</div>
+                                <div class="file-meta">Shared by Jane Smith • 2 days ago</div>
+                            </div>
+                            <div class="file-actions">
+                                <button class="action-btn view-record-btn" title="View" data-file-id="shared1"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn" title="Add Notes"><i class="fas fa-pen"></i></button>
+                                <button class="action-btn" title="Download"><i class="fas fa-download"></i></button>
+                            </div>
+                        </li>
+                        <li class="file-item">
+                            <div class="file-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="file-info">
+                                <div class="file-name">Allergy Information.pdf</div>
+                                <div class="file-meta">Shared by Robert Johnson • Today</div>
+                            </div>
+                            <div class="file-actions">
+                                <button class="action-btn view-record-btn" title="View" data-file-id="shared2"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn" title="Add Notes"><i class="fas fa-pen"></i></button>
+                                <button class="action-btn" title="Download"><i class="fas fa-download"></i></button>
+                            </div>
+                        </li>
+                        <li class="file-item">
+                            <div class="file-icon">
+                                <i class="fas fa-file-image"></i>
+                            </div>
+                            <div class="file-info">
+                                <div class="file-name">X-Ray Results.jpg</div>
+                                <div class="file-meta">Shared by Maria Lopez • 5 days ago</div>
+                            </div>
+                            <div class="file-actions">
+                                <button class="action-btn view-record-btn" title="View" data-file-id="shared3"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn" title="Add Notes"><i class="fas fa-pen"></i></button>
+                                <button class="action-btn" title="Download"><i class="fas fa-download"></i></button>
+                            </div>
+                        </li>
+                        <li class="file-item">
+                            <div class="file-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="file-info">
+                                <div class="file-name">Blood Test Results.pdf</div>
+                                <div class="file-meta">Shared by Jane Smith • 1 week ago</div>
+                            </div>
+                            <div class="file-actions">
+                                <button class="action-btn view-record-btn" title="View" data-file-id="shared4"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn" title="Add Notes"><i class="fas fa-pen"></i></button>
+                                <button class="action-btn" title="Download"><i class="fas fa-download"></i></button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="card">
+                <div class="card-header">
+                    <h2>Today's Appointments</h2>
+                    <button class="btn btn-outline" id="viewAllAppointmentsBtn">Full Schedule</button>
+                </div>
+                <ul class="patient-list">
+                    <li class="patient-item">
+                        <div class="patient-avatar">RJ</div>
+                        <div class="patient-info">
+                            <div class="patient-name">Robert Johnson</div>
+                            <div class="patient-details">
+                                <div class="patient-detail"><i class="fas fa-clock"></i> 10:30 AM - 11:00 AM</div>
+                                <div class="patient-detail"><i class="fas fa-clipboard-list"></i> Follow-up</div>
+                            </div>
+                        </div>
+                        <div class="patient-actions">
+                            <button class="action-btn" title="View Records"><i class="fas fa-file-medical"></i></button>
+                            <button class="action-btn" title="Start Session"><i class="fas fa-video"></i></button>
+                        </div>
+                    </li>
+                    <li class="patient-item">
+                        <div class="patient-avatar">SL</div>
+                        <div class="patient-info">
+                            <div class="patient-name">Sarah Lee</div>
+                            <div class="patient-details">
+                                <div class="patient-detail"><i class="fas fa-clock"></i> 1:00 PM - 1:30 PM</div>
+                                <div class="patient-detail"><i class="fas fa-clipboard-list"></i> Initial Consultation</div>
+                            </div>
+                        </div>
+                        <div class="patient-actions">
+                            <button class="action-btn" title="View Records"><i class="fas fa-file-medical"></i></button>
+                            <button class="action-btn" title="Start Session"><i class="fas fa-video"></i></button>
+                        </div>
+                    </li>
+                    <li class="patient-item">
+                        <div class="patient-avatar">JS</div>
+                        <div class="patient-info">
+                            <div class="patient-name">Jane Smith</div>
+                            <div class="patient-details">
+                                <div class="patient-detail"><i class="fas fa-clock"></i> 3:15 PM - 3:45 PM</div>
+                                <div class="patient-detail"><i class="fas fa-clipboard-list"></i> Urgent Check-up</div>
+                            </div>
+                        </div>
+                        <div class="patient-actions">
+                            <button class="action-btn" title="View Records"><i class="fas fa-file-medical"></i></button>
+                            <button class="action-btn" title="Start Session"><i class="fas fa-video"></i></button>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <!-- View File Modal -->
+    <div id="viewFileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="viewFileTitle">View Record</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body" id="viewFileBody">
+                <!-- File content will be shown here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="closeViewBtn">Close</button>
+                <button class="btn btn-primary" id="downloadRecordBtn">Download</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Notes Modal -->
+    <div id="addNotesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add Medical Notes</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="notesTitle">Title:</label>
+                    <input type="text" id="notesTitle" class="form-control" placeholder="Notes title">
+                </div>
+                <div class="form-group">
+                    <label for="notesContent">Notes:</label>
+                    <textarea id="notesContent" class="form-control" rows="6" placeholder="Enter your medical notes here..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Visibility:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" checked> Visible to patient</label>
+                        <label><input type="checkbox" checked> Visible to other providers</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelNotesBtn">Cancel</button>
+                <button class="btn btn-primary" id="saveNotesBtn">Save Notes</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2025 MedShare. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>
