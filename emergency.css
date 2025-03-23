@@ -1,104 +1,45 @@
-/* Base Styles */
+/* Emergency-specific styles */
 :root {
-  --primary-color: #2A7FFF;
-  --primary-hover: #1a6ce0;
-  --secondary-color: #f8f9fa;
-  --accent-color: #dc3545;
-  --text-color: #333;
-  --text-light: #6c757d;
-  --light-gray: #f0f2f5;
-  --medium-gray: #dee2e6;
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --spacing-xs: 0.25rem;
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 2rem;
+  --emergency-red: #dc3545;
+  --emergency-yellow: #ffc107;
+  --emergency-text: #333333;
+  --emergency-bg: #f8f9fa;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.6;
-  color: var(--text-color);
-  background-color: #f5f7fa;
-  padding: 0;
-  margin: 0;
-}
-
-/* Header Styles */
-header {
-  background-color: white;
-  box-shadow: var(--shadow-sm);
-  padding: 1rem 0;
-  position: fixed;
-  width: 100%;
-  top: 0;
-  z-index: 100;
-}
-
-header h1 {
-  color: var(--primary-color);
-  margin: 0;
-  font-size: 1.5rem;
-}
-
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--spacing-md);
-}
-
-nav a {
-  color: var(--primary-color);
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s ease;
-}
-
-nav a:hover {
-  color: var(--primary-hover);
-}
-
-/* Main Container */
+/* General emergency layout */
 .emergency-container {
-  max-width: 600px;
-  margin: 100px auto 40px;
-  padding: 0 var(--spacing-md);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 70px);
+  padding: var(--spacing-lg);
+  background-color: var(--emergency-bg);
 }
 
-/* Emergency Card */
 .emergency-card {
   background-color: white;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-md);
   padding: var(--spacing-lg);
-  margin-bottom: var(--spacing-md);
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
 }
 
 .emergency-card h2 {
-  color: var(--primary-color);
+  color: var(--emergency-red);
   margin-bottom: var(--spacing-md);
 }
 
 .emergency-card p {
   margin-bottom: var(--spacing-md);
-  color: var(--text-light);
+  color: var(--emergency-text);
 }
 
-/* Form Styles */
+/* Form elements */
 .input-group {
   margin-bottom: var(--spacing-md);
+  text-align: left;
 }
 
 .input-group label {
@@ -113,16 +54,8 @@ nav a:hover {
   border: 1px solid var(--medium-gray);
   border-radius: var(--radius-sm);
   font-size: 1rem;
-  transition: border-color 0.2s ease;
 }
 
-.input-group input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(42, 127, 255, 0.1);
-}
-
-/* Button Styles */
 .button-group {
   display: flex;
   gap: var(--spacing-sm);
@@ -130,38 +63,41 @@ nav a:hover {
 }
 
 .primary-btn {
+  flex: 1;
   background-color: var(--primary-color);
   color: white;
+  padding: 0.75rem 1rem;
   border: none;
-  padding: 0.75rem 1.25rem;
   border-radius: var(--radius-sm);
-  font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-  flex: 1;
+  transition: background-color 0.2s;
 }
 
 .primary-btn:hover {
-  background-color: var(--primary-hover);
+  background-color: #1a68e6;
 }
 
 .secondary-btn {
-  background-color: var(--medium-gray);
+  background-color: var(--light-gray);
   color: var(--text-color);
-  border: none;
   padding: 0.5rem 1rem;
+  border: 1px solid var(--medium-gray);
   border-radius: var(--radius-sm);
-  font-size: 0.9rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s;
 }
 
 .secondary-btn:hover {
-  background-color: #c8ccd0;
+  background-color: var(--medium-gray);
 }
 
-/* Camera Container */
+/* QR code camera */
+.hidden {
+  display: none;
+}
+
 .camera-container {
   position: fixed;
   top: 0;
@@ -169,18 +105,18 @@ nav a:hover {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
 }
 
 .camera-view {
   position: relative;
   width: 100%;
-  max-width: 600px;
-  height: 400px;
-  background-color: black;
+  max-width: 500px;
+  height: 500px;
+  background-color: #000;
   border-radius: var(--radius-md);
   overflow: hidden;
 }
@@ -191,22 +127,213 @@ nav a:hover {
   object-fit: cover;
 }
 
-.camera-view button {
+.camera-view .secondary-btn {
   position: absolute;
-  bottom: 20px;
+  bottom: var(--spacing-md);
   left: 50%;
   transform: translateX(-50%);
 }
 
-/* Utility Classes */
-.hidden {
-  display: none;
+/* Emergency Dashboard styles */
+.dashboard-container {
+  padding-top: var(--spacing-lg);
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* Responsive Styles */
+.patient-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-md);
+  background-color: white;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.patient-info h2 {
+  margin: 0 0 var(--spacing-xs) 0;
+}
+
+.patient-info p {
+  margin: 0;
+  margin-bottom: var(--spacing-xs);
+  color: var(--text-light);
+}
+
+.alert-box {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-weight: bold;
+}
+
+.alert-box.critical {
+  background-color: #fff5f5;
+  color: var(--emergency-red);
+  border: 1px solid var(--emergency-red);
+}
+
+.alert-icon {
+  margin-right: var(--spacing-sm);
+  font-size: 1.25rem;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.dashboard-card {
+  background-color: white;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-md);
+}
+
+.dashboard-card h3 {
+  margin-top: 0;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-xs);
+  border-bottom: 1px solid var(--medium-gray);
+}
+
+/* Vital signs */
+.vital-item {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--spacing-xs) 0;
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.vital-item:last-child {
+  border-bottom: none;
+}
+
+.vital-label {
+  font-weight: 500;
+}
+
+/* Medications */
+.med-list {
+  list-style: none;
+  padding: 0;
+}
+
+.med-list li {
+  margin-bottom: var(--spacing-sm);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.med-list li:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.med-name {
+  font-weight: bold;
+  margin-bottom: var(--spacing-xs);
+}
+
+.med-details {
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+/* Medical history */
+.history-item {
+  margin-bottom: var(--spacing-sm);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.history-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.history-date {
+  font-weight: bold;
+  margin-bottom: var(--spacing-xs);
+  color: var(--primary-color);
+}
+
+/* Emergency contacts */
+.contact-item {
+  margin-bottom: var(--spacing-sm);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.contact-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.contact-name {
+  font-weight: bold;
+  margin-bottom: var(--spacing-xs);
+}
+
+.contact-phone {
+  color: var(--text-light);
+}
+
+/* Updated header for emergency pages */
+header {
+  background-color: var(--primary-color);
+  color: white;
+  padding: var(--spacing-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+header nav {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+header nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+header nav a:hover {
+  opacity: 0.8;
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
-  .emergency-container {
-    margin-top: 80px;
+  .patient-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .alert-box {
+    margin-top: var(--spacing-sm);
+    width: 100%;
+  }
+  
+  .dashboard-grid {
+    grid-template-columns: 1fr;
   }
   
   .button-group {
