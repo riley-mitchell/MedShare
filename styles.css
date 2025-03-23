@@ -207,6 +207,50 @@
  .nav-menu li a:hover {
      color: var(--primary-color);
  }
+
+/* Emergency Access Link Styling */
+.nav-menu li a[href="emergency.html"] {
+    color: var(--accent-color);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.nav-menu li a[href="emergency.html"]::before {
+    content: '\f06a'; /* Font Awesome exclamation triangle icon */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    margin-right: 5px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* When hovering over emergency link */
+.nav-menu li a[href="emergency.html"]:hover {
+    color: #ff3b3b; /* Slightly darker red on hover */
+    text-decoration: underline;
+}
+
+/* For mobile view */
+@media (max-width: 768px) {
+    .nav-menu li a[href="emergency.html"] {
+        background-color: rgba(255, 107, 107, 0.1);
+        border-radius: var(--radius-md);
+        padding: 0.8rem var(--spacing-sm);
+    }
+}
  
  .hamburger {
      display: none;
